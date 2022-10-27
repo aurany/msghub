@@ -1,0 +1,30 @@
+
+version: "3.7"
+services:
+
+  redis:
+    image: redis:7.0.5
+    volumes:
+      - ${PWD}/redis/data:/data
+
+  producer:
+    build: producer
+    environment:
+      REDIS_STREAM: mystream
+      REDIS_HOSTNAME: redis
+      REDIS_PORT: 6379
+      PYTHONUNBUFFERED: 1
+    depends_on:
+      - redis
+
+  webapp:
+    build: webapp
+    ports:
+      - 8000:8000
+    environment:
+      REDIS_STREAM: mystream
+      REDIS_HOSTNAME: redis
+      REDIS_PORT: 6379
+      PYTHONUNBUFFERED: 1
+    depends_on:
+      - redis

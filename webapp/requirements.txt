@@ -1,0 +1,4 @@
+aioredis==1.3.0
+fastapi
+uvicorn
+websockets
